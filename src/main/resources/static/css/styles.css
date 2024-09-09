@@ -1,0 +1,36 @@
+.header {
+    padding: 1.5% 0% 1.5% 2.5%;
+    background-color: #32cc8c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heading {
+    text-align: center;
+}
+
+.main {
+    padding: 3% 2.5%;
+}
+
+.row {
+    padding: 1% 30%;
+}
+
+.col-form-label {
+    text-align: left;
+    font-weight: 500;
+}
+
+.actions {
+    padding: 2.5% 1.5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    margin: 2% 0%;
+    padding: 1.5% 4%;
+    text-align: center;
+}

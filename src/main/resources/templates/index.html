@@ -1,0 +1,71 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Simple Calculator</title>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
+    </head>
+    <body>
+        <header class="header">
+            <h4 class="heading">Simple Calculator</h4>
+        </header>
+
+        <main class="main">
+            <div class="form">
+                <form class="row g-3" id="calculator-form" method="get">
+                    <div class="col-md-12">
+                        <label for="a" class="col-form-label">Number 1</label>
+                        <input type="number" class="form-control" id="a" name="a" required>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="b" class="col-form-label">Number 2</label>
+                        <input type="number" class="form-control" id="b" name="b" required>
+                    </div>
+                    <div th:if="${result}">
+                        <label for="b" class="col-form-label" th:text="${operation}"></label>
+                        <input type="text" class="form-control" id="result" th:value="${response}" readonly>
+                    </div>
+                    <div class="col-md-12 actions" th:if="${result != null}">
+                        <button type="button" class="btn btn-danger" onclick="refreshPage()">
+                            Reload
+                        </button>
+                    </div>
+                    <div class="col-md-12 actions" th:if="${result == null}">
+                        <button type="button" class="btn btn-primary btn-addition" onclick="submitForm('addition')">
+                            Addition
+                        </button>
+                        <button type="button" class="btn btn-primary btn-subtraction" onclick="submitForm('subtraction')">
+                            Subtraction
+                        </button>
+                        <button type="button" class="btn btn-primary btn-multiplication" onclick="submitForm('multiplication')">
+                            Multiplication
+                        </button>
+                        <button type="button" class="btn btn-primary btn-division" onclick="submitForm('division')">
+                            Division
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+        <script>
+            function submitForm(action) {
+                const form = document.getElementById('calculator-form');
+                const a = document.getElementById('a').value;
+                const b = document.getElementById('b').value;
+
+                if (a != "" && b != "") {
+                    form.action = `/calc/${action}?a=${a}&b=${b}`;
+                    form.submit();
+                }
+            }
+
+            function refreshPage() {
+                window.location.reload();
+            }
+        </script>
+    </body>
+</html>

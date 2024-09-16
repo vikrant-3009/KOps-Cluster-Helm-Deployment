@@ -33,5 +33,21 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+//         stage('SonarQube Quality Gate Check') {
+//             steps {
+//                 withSonarQubeEnv('SonarQube') {
+//                     sh 'mvn sonar:sonar'
+//                 }
+//             }
+//         }
     }
 }

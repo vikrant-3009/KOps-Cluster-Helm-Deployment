@@ -42,12 +42,13 @@ pipeline {
             }
         }
 
-//         stage('SonarQube Quality Gate Check') {
-//             steps {
-//                 withSonarQubeEnv('SonarQube') {
-//                     sh 'mvn sonar:sonar'
-//                 }
-//             }
-//         }
+        stage('SonarQube Quality Gate Check') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
     }
 }

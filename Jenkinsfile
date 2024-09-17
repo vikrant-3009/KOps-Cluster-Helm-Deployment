@@ -50,7 +50,7 @@ pipeline {
 
                         if (qualityGate.status != 'OK') {
                             echo "${qualityGate.status}"
-                            error "Quality Gate failed: ${qualityGateStatus}"
+                            echo "SonarQube Quality Gate failed"
                         }
                         else {
                             echo "${qualityGate.status}"

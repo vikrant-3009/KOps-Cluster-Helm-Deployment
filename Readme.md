@@ -11,3 +11,11 @@
 - Pull the latest image from ECR and deploy using Helm charts on a K8S cluster [setup to be done via Kops]
 - Deploy few more applications on cluster (nginx, tomcat) so that multiple applications are hosted on same K8S Cluster.
 - Use Prometheus to capture metrics of these applications and visualize the same on Grafana Dashboard.
+
+
+### Jenkins Plugins Used
+
+- SonarQube
+- AWS Credentials
+- Docker
+- Amazon ECR

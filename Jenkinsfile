@@ -11,7 +11,7 @@ pipeline {
         NEXUS_URL = "192.168.56.101:9081"
         NEXUS_REPOSITORY = "calculator-app"
         NEXUS_CREDENTIAL_ID = "nexus-creds"
-        NEXUS_CREDS = credentials('nexus_creds')
+        NEXUS_CREDS = credentials('nexus-creds')
 
         AWS_CREDS_ID = 'aws-credentials'
         AWS_ACCOUNT_URL = "876724398547.dkr.ecr.eu-north-1.amazonaws.com"

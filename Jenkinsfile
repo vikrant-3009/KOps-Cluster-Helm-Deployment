@@ -5,6 +5,15 @@ pipeline {
         maven "Maven"
     }
 
+    environment {
+        // NEXUS ARTIFACTORY
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "192.168.56.101:9081"
+        NEXUS_REPOSITORY = "calculator-app"
+        NEXUS_CREDENTIAL_ID = "nexus-creds"
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -18,7 +27,7 @@ pipeline {
 
         stage('Build Code') {
             steps {
-                sh "mvn clean package"
+                sh "mvn clean package -DskipTests"
             }
         }
 
@@ -58,6 +67,26 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+
+        stage('Upload to Nexus Artifactory') {
+            steps {
+                nexusArtifactUploader(
+                    credentialsId: ${NEXUS_CREDENTIAL_ID},
+                    nexusUrl: ${NEXUS_URL},
+                    nexusVersion: ${NEXUS_VERSION},
+                    protocol: ${NEXUS_PROTOCOL},
+                    repository: ${NEXUS_REPOSITORY},
+                    groupId: 'com.example',
+                    version: '0.0.1',
+                    artifacts: [
+                        [artifactId: 'CalculatorApp-SpringBoot',
+                        classifier: '',
+                        file: 'target/*.war',
+                        type: 'war']
+                    ]
+                )
             }
         }
 

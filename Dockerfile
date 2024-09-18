@@ -1,9 +1,10 @@
 FROM tomcat:jre17-temurin-jammy
 
-ARG ARTIFACTORY_USERNAME
-ARG ARTIFACTORY_PASSWORD
-ARG ARTIFACTORY_URL
+ARG NEXUS_USERNAME
+ARG NEXUS_PASSWORD
+ARG NEXUS_URL
+ARG NEXUS_REPOSITORY
 
-RUN curl -u "${ARTIFACTORY_USERNAME}:${ARTIFACTORY_PASSWORD}" \
+RUN curl -u "${NEXUS_USERNAME}:${NEXUS_PASSWORD}" \
     -o /usr/local/tomcat/webapps/calculator-app-spring-boot.war \
-    "${ARTIFACTORY_URL}/java-app-1/dev/calculator-app-spring-boot.war"
+    "${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/com/example/CalculatorApp-SpringBoot/0.0.1/CalculatorApp-SpringBoot-0.0.1.war"

@@ -72,21 +72,25 @@ pipeline {
 
         stage('Upload to Nexus Artifactory') {
             steps {
-                nexusArtifactUploader(
-                    credentialsId: NEXUS_CREDENTIAL_ID,
-                    nexusUrl: NEXUS_URL,
-                    nexusVersion: NEXUS_VERSION,
-                    protocol: NEXUS_PROTOCOL,
-                    repository: NEXUS_REPOSITORY,
-                    groupId: 'com.example',
-                    version: '0.0.1',
-                    artifacts: [
-                        [artifactId: 'CalculatorApp-SpringBoot',
-                        classifier: '',
-                        file: 'target/*.war',
-                        type: 'war']
-                    ]
-                )
+                script {
+                    filesByGlob = findFiles(glob: "target/*.war");
+                    artifactPath = filesByGlob[0].path;
+
+                    nexusArtifactUploader(
+                        credentialsId: NEXUS_CREDENTIAL_ID,
+                        nexusUrl: NEXUS_URL,
+                        nexusVersion: NEXUS_VERSION,
+                        protocol: NEXUS_PROTOCOL,
+                        repository: NEXUS_REPOSITORY,
+                        groupId: 'com.example',
+                        version: '0.0.1',
+                        artifacts: [
+                            [artifactId: pom.artifactId,
+                            classifier: '',
+                            file: artifactPath,
+                            type: 'war']
+                        ]
+                    )
             }
         }
 

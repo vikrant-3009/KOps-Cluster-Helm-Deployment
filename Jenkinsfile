@@ -91,6 +91,7 @@ pipeline {
                             type: 'war']
                         ]
                     )
+                }
             }
         }
 

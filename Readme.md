@@ -15,7 +15,9 @@
 
 ### Jenkins Plugins Used
 
-- SonarQube
+- SonarQube Scanner
+- Nexus Artifactory Uploader
+- Pipeline Utility Steps
 - AWS Credentials
 - Docker
 - Amazon ECR

@@ -78,8 +78,6 @@
    - kubectl get nodes (If, correctly setup, all nodes master and worker will show up)
    - kubectl get pods -n kube-system
 
-
-
 5. Delete the cluster.
    - kops delete cluster --name vikrant.k8s.local --yes
 
@@ -106,6 +104,7 @@
    - kubectl logs calc-app-calculator-app-7476d77676-8kjsc --namespace test-1 (Check logs or troubleshoot a pod)
    - kubectl describe pod calc-app-calculator-app-7476d77676-8kjsc --namespace test-1
    - kubectl get services --namespace test-1
+   - kubectl get all -n test-1
 
 7. Update the Deployment (If needed) 
    - helm upgrade calc-app ./calculator-app --namespace test-1
@@ -114,3 +113,4 @@
 
 8. Clean Up (If needed)
    - helm delete calc-app --namespace test-1
+   - kops delete cluster --name vikrant.k8s.local --yes

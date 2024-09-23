@@ -52,13 +52,15 @@
             </div>
         </main>
         <script>
+            const contextPath = '/calculator-app';
+
             function submitForm(action) {
                 const form = document.getElementById('calculator-form');
                 const a = document.getElementById('a').value;
                 const b = document.getElementById('b').value;
 
                 if (a != "" && b != "") {
-                    form.action = `/calc/${action}?a=${a}&b=${b}`;
+                    form.action = `${contextPath}/calc/${action}?a=${a}&b=${b}`;
                     form.submit();
                 }
             }

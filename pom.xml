@@ -54,7 +54,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>calculator-app-spring-boot</finalName>
+		<finalName>calculator-app</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

@@ -164,7 +164,7 @@ pipeline {
                         helm repo update
 
                         # Install the prometheus-grafana repo in the working namespace
-                        helm install prometheus prometheus-community/kube-prometheus-stack --namespace test-1
+                        helm upgrade prometheus prometheus-community/kube-prometheus-stack --namespace test-1
 
                         # Change the prometheus-grafana service from "ClusterIP" type to "LoadBalancer" type
                         kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n test-1

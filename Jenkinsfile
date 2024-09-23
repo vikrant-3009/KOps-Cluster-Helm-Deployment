@@ -146,7 +146,8 @@ pipeline {
 
                         # Run the helm upgrade command
                         helm upgrade calc-app ./Helm/calculator-app --namespace test-1 \
-                            --set image.repository=\${AWS_ECR_REGISTRY},image.tag=\${env.BUILD_NUMBER}
+                            --set image.repository=${AWS_ECR_REGISTRY} \
+                            --set image.tag=${env.BUILD_NUMBER}
                     """
                 }
             }

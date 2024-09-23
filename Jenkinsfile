@@ -14,8 +14,11 @@ pipeline {
         NEXUS_CREDS = credentials('nexus-creds')
 
         AWS_CREDS_ID = 'aws-credentials'
-        AWS_ACCOUNT_URL = "876724398547.dkr.ecr.eu-north-1.amazonaws.com"
-        AWS_ECR_REGISTRY = "${AWS_ACCOUNT_URL}/vikrantkatoch/calculator-app"
+        AWS_ECR_ACCOUNT_URL = "876724398547.dkr.ecr.eu-north-1.amazonaws.com"
+        AWS_ECR_REGISTRY = "${AWS_ECR_ACCOUNT_URL}/vikrantkatoch/calculator-app"
+        IMAGE_TAG = 51
+
+        KUBECONFIG = credentials('kubeconfig')   // Kubeconfig for Kubernetes cluster access
     }
 
     stages {
@@ -131,6 +134,41 @@ pipeline {
                     docker.withRegistry("https://" + AWS_ECR_REGISTRY, "ecr:eu-north-1:" + AWS_CREDS_ID) {
                         dockerImage.push()
                     }
+                }
+            }
+        }
+
+        stage('Deploy app to Kubernetes cluster using Helm Chart') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        # create namespace if not exists
+                        kubectl get namespace test-1 || kubectl create namespace test-1
+
+                        # Run the helm upgrade command
+                        helm upgrade calc-app ./Helm/calculator-app --namespace test-1 \
+                            --set image.repository=\${AWS_ECR_REGISTRY},image.tag=\${IMAGE_TAG}
+                    """
+                }
+            }
+        }
+
+        stage('SetUp Monitoring using Helm Chart') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        # Add Prometheus-Grafana Helm Repo
+                        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+                        # Update Repo
+                        helm repo update
+
+                        # Install the prometheus-grafana repo in the working namespace
+                        helm install prometheus prometheus-community/kube-prometheus-stack --namespace test-1
+
+                        # Change the prometheus-grafana service from "ClusterIP" type to "LoadBalancer" type
+                        kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n test-1
+                    """
                 }
             }
         }

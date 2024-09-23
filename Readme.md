@@ -30,7 +30,7 @@
 - **helm**
 
 ***
-##### Extra Info:
+#### Extra Info:
 1. Check out more info regarding kops commands.
    - kops create cluster --help | less
    
@@ -59,7 +59,7 @@
    - terraform init
    - terraform plan
    - terraform apply
-   - kops export kubecfg --name vikrantkops.k8s.local --state s3://vikrant-kops-store
+   - kops export kubecfg --name vikrant.k8s.local --state s3://vikrant-kops-store
    - kops get clusters (It will list all the clusters)
 
    OR
@@ -70,7 +70,7 @@
    - kops edit ig nodes-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the worker node configuration)
    - kops edit ig control-plane-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the master node configuration)
    - kops update cluster --name vikrant.k8s.local --yes
-   - kops export kubecfg --name vikrantkops.k8s.local --state s3://vikrant-kops-store --admin
+   - kops export kubecfg --name vikrant.k8s.local --state s3://vikrant-kops-store --admin
    - kops rolling-update cluster --name vikrant.k8s.local --yes (run this command, if made any changes to the cluster/node configuration)
 
 4. Verify the cluster creation setup (cluster creation may take up to 10-15 min).

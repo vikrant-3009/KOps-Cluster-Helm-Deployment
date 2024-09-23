@@ -16,7 +16,6 @@ pipeline {
         AWS_CREDS_ID = 'aws-credentials'
         AWS_ECR_ACCOUNT_URL = "876724398547.dkr.ecr.eu-north-1.amazonaws.com"
         AWS_ECR_REGISTRY = "${AWS_ECR_ACCOUNT_URL}/vikrantkatoch/calculator-app"
-        IMAGE_TAG = 51
 
         KUBECONFIG = credentials('kubeconfig')   // Kubeconfig for Kubernetes cluster access
     }
@@ -147,7 +146,7 @@ pipeline {
 
                         # Run the helm upgrade command
                         helm upgrade calc-app ./Helm/calculator-app --namespace test-1 \
-                            --set image.repository=\${AWS_ECR_REGISTRY},image.tag=\${IMAGE_TAG}
+                            --set image.repository=\${AWS_ECR_REGISTRY},image.tag=\${env.BUILD_NUMBER}
                     """
                 }
             }

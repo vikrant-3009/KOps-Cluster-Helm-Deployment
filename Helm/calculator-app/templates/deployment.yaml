@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javaapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javaapi
+  template:
+    metadata:
+      labels:
+        app: javaapi
+    spec:
+      containers:
+        - name: javaapi
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 8080

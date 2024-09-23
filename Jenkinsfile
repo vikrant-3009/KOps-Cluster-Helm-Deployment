@@ -72,6 +72,20 @@ pipeline {
                     }
                 }
             }
+            post {
+                failure {
+                    emailext (
+                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) - Quality Gate Failed",
+                        body: """
+                            <p>Hi Team,</p>
+                            <p>The Jenkins build <b>${env.JOB_NAME}</b> with build number <b>${env.BUILD_NUMBER}</b> has failed due to the Quality Gate not passing.</p>
+                            <p>Please review the SonarQube results and address any issues.</p>
+                            <p>Regards,<br>DevOps Team</p>
+                        """,
+                        mimeType: 'text/html'
+                    )
+                }
+            }
         }
 
         stage('Upload to Nexus Artifactory') {

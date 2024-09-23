@@ -12,7 +12,6 @@
 - Deploy few more applications on cluster (nginx, tomcat) so that multiple applications are hosted on same K8S Cluster.
 - Use Prometheus to capture metrics of these applications and visualize the same on Grafana Dashboard.
 
-
 ### Jenkins Plugins Used
 
 - SonarQube Scanner
@@ -71,6 +70,7 @@
    - kops edit ig nodes-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the worker node configuration)
    - kops edit ig control-plane-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the master node configuration)
    - kops update cluster --name vikrant.k8s.local --yes
+   - kops export kubecfg --name vikrantkops.k8s.local --state s3://vikrant-kops-store --admin
    - kops rolling-update cluster --name vikrant.k8s.local --yes (run this command, if made any changes to the cluster/node configuration)
 
 4. Verify the cluster creation setup (cluster creation may take up to 10-15 min).
@@ -81,7 +81,7 @@
 5. Delete the cluster.
    - kops delete cluster --name vikrant.k8s.local --yes
 
-### 2. 
+### 2. Deploy the application on the cluster using Helm Chart
 
 1. Authenticate Docker to ECR.
    - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 876724398547.dkr.ecr.eu-north-1.amazonaws.com/vikrantkatoch/calculator-app
@@ -114,3 +114,10 @@
 8. Clean Up (If needed)
    - helm delete calc-app --namespace test-1
    - kops delete cluster --name vikrant.k8s.local --yes
+
+### 3. SetUp Prometheus-Grafana Monitoring using Helm
+
+   - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   - helm repo update
+   - helm install prometheus prometheus-community/kube-prometheus-stack --namespace test-1
+   - kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n test-1 (Change the prometheus-grafana service from "ClusterIP" type to "LoadBalancer" type)

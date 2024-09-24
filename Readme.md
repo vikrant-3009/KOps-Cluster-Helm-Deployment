@@ -59,7 +59,7 @@
    - terraform init
    - terraform plan
    - terraform apply
-   - kops export kubecfg --name vikrant.k8s.local --state s3://vikrant-kops-store
+   - kops export kubecfg --name vikrant.k8s.local --state s3://vikrant-kops-store --admin
    - kops get clusters (It will list all the clusters)
 
    OR
@@ -70,8 +70,7 @@
    - kops edit ig nodes-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the worker node configuration)
    - kops edit ig control-plane-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the master node configuration)
    - kops update cluster --name vikrant.k8s.local --yes
-   - kops export kubecfg --name vikrant.k8s.local --state s3://vikrant-kops-store --admin
-   - kops rolling-update cluster --name vikrant.k8s.local --yes (run this command, if made any changes to the cluster/node configuration)
+   - kops rolling-update cluster --name vikrant.k8s.local --yes --cloudonly (run this command, if made any changes to the cluster/node configuration)
 
 4. Verify the cluster creation setup (cluster creation may take up to 10-15 min).
    - kops validate cluster --name vikrant.k8s.local
@@ -108,7 +107,7 @@
 
 7. Update the Deployment (If needed) 
    - helm upgrade calc-app ./calculator-app --namespace test-1
-   - helm upgrade calc-app ./calculator-app --namespace test-1 \
+   - helm upgrade --install calc-app ./calculator-app --namespace test-1 \
      --set image.repository=876724398547.dkr.ecr.eu-north-1.amazonaws.com/vikrantkatoch/calculator-app,image.tag=46
 
 8. Clean Up (If needed)
@@ -119,5 +118,5 @@
 
    - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
    - helm repo update
-   - helm install prometheus prometheus-community/kube-prometheus-stack --namespace test-1
+   - helm upgrade --install prometheus prometheus-community/kube-prometheus-stack --namespace test-1
    - kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n test-1 (Change the prometheus-grafana service from "ClusterIP" type to "LoadBalancer" type)

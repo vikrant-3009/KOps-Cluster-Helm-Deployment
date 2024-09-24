@@ -145,29 +145,9 @@ pipeline {
                         kubectl get namespace test-1 || kubectl create namespace test-1
 
                         # Run the helm upgrade command
-                        helm upgrade calc-app ./Helm/calculator-app --namespace test-1 \
+                        helm upgrade --install calc-app ./Helm/calculator-app --namespace test-1 \
                             --set image.repository=${AWS_ECR_REGISTRY} \
                             --set image.tag=${env.BUILD_NUMBER}
-                    """
-                }
-            }
-        }
-
-        stage('SetUp Monitoring using Helm Chart') {
-            steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh """
-                        # Add Prometheus-Grafana Helm Repo
-                        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-                        # Update Repo
-                        helm repo update
-
-                        # Install the prometheus-grafana repo in the working namespace
-                        helm upgrade prometheus prometheus-community/kube-prometheus-stack --namespace test-1
-
-                        # Change the prometheus-grafana service from "ClusterIP" type to "LoadBalancer" type
-                        kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n test-1
                     """
                 }
             }

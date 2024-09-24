@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    tools {
+        maven "Maven"
+    }
+
+    environment {
+        KUBECONFIG = credentials('kubeconfig')   // Kubeconfig for Kubernetes cluster access
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                script {
+                    git branch: 'master',
+                    credentialsId: 'GitHub-Token',
+                    url: 'https://github.com/vikrant-3009/kubernetes-assignment-1.git'
+                }
+            }
+        }
+
+        stage('SetUp Monitoring using Helm Chart') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        # Add Prometheus-Grafana Helm Repo
+                        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+                        # Update Repo
+                        helm repo update
+
+                        # Install the prometheus-grafana repo in the working namespace
+                        helm upgrade --install prometheus prometheus-community/kube-prometheus-stack --namespace test-1
+
+                        # Change the prometheus-grafana service from "ClusterIP" type to "LoadBalancer" type
+                        kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n test-1
+                    """
+                }
+            }
+        }
+
+    }
+}

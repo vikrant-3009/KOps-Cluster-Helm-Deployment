@@ -1,5 +1,6 @@
-# Kubernetes Assignment
+# KOps-Cluster-Helm-Deployment
 
+### Problem Statement
 - Create a K8S cluster on AWS account using kops (1 master, 1 worker node) via terraform.
 - Create a CI-CD pipeline that would build/perform code.
 - Use any code scanner to identify vulnerabilities/code quality (Example-SonarQube or SonarCloud)
@@ -13,7 +14,6 @@
 - Use Prometheus to capture metrics of these applications and visualize the same on Grafana Dashboard.
 
 ### Jenkins Plugins Used
-
 - SonarQube Scanner
 - Nexus Artifactory Uploader
 - Pipeline Utility Steps
@@ -22,7 +22,6 @@
 - Amazon ECR
 
 ### Installations
-
 - **AWS CLI** => run "aws configure", then set access-key, secret-key, region.
 - **KOps** => refer to their latest stable release from official GitHub repo
 - **Terraform**
@@ -71,7 +70,6 @@
    - kops edit ig control-plane-us-east-1a --name vikrant.k8s.local (if, we want to make any changes to the master node configuration)
    - kops update cluster --name vikrant.k8s.local --yes
    - kops rolling-update cluster --name vikrant.k8s.local --yes --cloudonly (run this command, if made any changes to the cluster/node configuration)
-
 4. Verify the cluster creation setup (cluster creation may take up to 10-15 min).
    - kops validate cluster --name vikrant.k8s.local
    - kubectl get nodes (If, correctly setup, all nodes master and worker will show up)

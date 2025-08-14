@@ -37,7 +37,7 @@
    - kops get ig --name vikrant.k8s.local
 
 3. SSH inside the control or worker node
-   - ssh to the master: ssh -i ~/.ssh/id_rsa ubuntu@<public-ip-of-instance
+   - ssh to the master: ssh -i ~/.ssh/id_rsa ubuntu@<public-ip-of-instance>
 ***
 
 ## Next Steps
